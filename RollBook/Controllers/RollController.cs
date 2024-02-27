@@ -77,8 +77,8 @@ namespace RollBook.Controllers
                             int numericPart = 1;
                             if (parts.Length == 2)
                             {
-                                prefix = Convert.ToChar(parts[0]);          // "M"
-                                numericPart = Convert.ToInt32(parts[1]);     // "1004"
+                                prefix = Convert.ToChar(parts[0]);          
+                                numericPart = Convert.ToInt32(parts[1]);     
 
                                 if (numericPart!=0 && numericPart<9999)
                                 {
