@@ -152,7 +152,7 @@
 <br />
 
 <div style="padding-bottom:40px;">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <select class="form-control" id="SearchQualityID" name="SearchQualityID">
             <option value="0">Select Quality</option>
             @{
@@ -166,7 +166,21 @@
             }
         </select>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
+        <select class="form-control" id="SearchDNR" name="SearchDNR">
+            <option value="0">Select DNR</option>
+            @{
+                if (ViewBag.lstRoll != null)
+                {
+                    foreach (RollBook.Models.RollMaster item in ViewBag.lstDNR)
+                    {
+                        <option value="@item.DNR">@item.DNR</option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
         <input type="date" id="SearchDate" name="SearchDate" class="form-control" />
     </div>
     <div class="col-md-2">
@@ -226,6 +240,7 @@
 
             var mData = {
                 QualityID: $("#SearchQualityID").val(),
+                DNR: $("#SearchDNR").val(),
                 EntryDate: $("#SearchDate").val() == '' ? output : $("#SearchDate").val()
             }
 
@@ -239,7 +254,6 @@
 
                     var obj = JSON.parse(mRes);
                     var iHTML = "";
-                    debugger;
                     if (obj.length === 0) {
                         $("#data").html("<tr><td colspan='15' align='center'>No Data Found.</td></tr>");
                     }
@@ -365,7 +379,6 @@
                 dataType: "json",
                 success: function (mRes) {
                     var obj = JSON.parse(mRes);
-                    debugger;
                     $("#QualityID").val(obj[0].QualityID);
                     $("#LoomID").val(obj[0].LoomID);
                     $("#RollNo").val(obj[0].RollNo);

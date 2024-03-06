@@ -11,9 +11,9 @@ namespace RollBook.DAL
 {
     public class Roll_DAL
     {
-        string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
+        string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
-        public List<RollMaster> GetAllRoll(int QualityID,DateTime EntryDate)
+        public List<RollMaster> GetAllRoll(int QualityID, string DNR,DateTime EntryDate)
         {
             List<RollMaster> RollList = new List<RollMaster>();
             int id = 0;
@@ -23,6 +23,7 @@ namespace RollBook.DAL
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "RollMaster_Filter";
                 command.Parameters.AddWithValue("@QualityID", QualityID);
+                command.Parameters.AddWithValue("@DNR", DNR);
                 command.Parameters.AddWithValue("@EntryDate", EntryDate);
                 SqlDataAdapter sqlDA = new SqlDataAdapter(command);
                 DataTable dtRoll = new DataTable();
@@ -178,6 +179,33 @@ namespace RollBook.DAL
                     });
                 }
                 return SizeList;
+            }
+        }
+
+        public List<RollMaster> GetAllDNR()
+        {
+            List<RollMaster> RollList = new List<RollMaster>();
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "RollMaster_GetDNR";
+                SqlDataAdapter sqlDA = new SqlDataAdapter(command);
+                DataTable dtRoll = new DataTable();
+
+                connection.Open();
+                sqlDA.Fill(dtRoll);
+                connection.Close();
+
+                foreach (DataRow dr in dtRoll.Rows)
+                {
+                    RollList.Add(new RollMaster
+                    {
+                        DNR = dr["DNR"].ToString(),
+                    });
+                }
+                return RollList;
             }
         }
     }

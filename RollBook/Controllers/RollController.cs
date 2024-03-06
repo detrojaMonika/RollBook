@@ -1,4 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using RollBook.DAL;
 using RollBook.Models;
 using System;
@@ -17,7 +19,7 @@ namespace RollBook.Controllers
     {
 
         Roll_DAL _RollDAL = new Roll_DAL();
-        string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
+        string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
         // GET: Student
         public ActionResult Index()
@@ -31,16 +33,19 @@ namespace RollBook.Controllers
             List<SizeMaster> lstSize = _RollDAL.GetAllSize();
             ViewBag.lstSize = lstSize;
 
+            List<RollMaster> lstDNR = _RollDAL.GetAllDNR();
+            ViewBag.lstDNR = lstDNR;
+
             return View();
         }
 
         [HttpPost]
-        public JsonResult GetData(int QualityID, DateTime EntryDate)
+        public JsonResult GetData(int QualityID, string DNR, DateTime EntryDate)
         {
             try
             {
                 //List<RollMaster> lstRoll = _RollDAL.GetAllRoll();
-                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID, EntryDate);
+                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID, DNR, EntryDate);
                 HttpContext.Cache["RoollBookReport"] = Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll);
 
                 return Json(Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll), JsonRequestBehavior.AllowGet);
@@ -58,44 +63,9 @@ namespace RollBook.Controllers
 
             try
             {
+
                 using (SqlConnection connection = new SqlConnection(conString))
                 {
-                    if (Roll.RollID==0)
-                    {
-                        SqlCommand command1 = connection.CreateCommand();
-                        command1.CommandType = CommandType.StoredProcedure;
-                        command1.CommandText = "RollMaster_GetRollNo";
-
-                        connection.Open();
-
-                        var result = command1.ExecuteScalar();
-
-                        if (result != null && result != DBNull.Value)
-                        {
-                            var parts = result.ToString().Split('-');
-                            char prefix = 'A';
-                            int numericPart = 1;
-                            if (parts.Length == 2)
-                            {
-                                prefix = Convert.ToChar(parts[0]);          
-                                numericPart = Convert.ToInt32(parts[1]);     
-
-                                if (numericPart!=0 && numericPart<9999)
-                                {
-                                    numericPart=numericPart+1;
-                                }
-                                else if (numericPart==9999)
-                                {
-                                    //increment alphabet
-                                    prefix++;
-                                    numericPart=1;
-                                }
-                                Roll.RollNo=prefix.ToString()+'-'+numericPart.ToString();
-                            }
-                        }
-                        connection.Close();
-                    }
-
                     SqlCommand command = connection.CreateCommand();
                     command.CommandType = CommandType.StoredProcedure;
                     command.CommandText = "RollMaster_Insert_Update";
@@ -264,6 +234,10 @@ namespace RollBook.Controllers
                     var cell = headerRow.CreateCell(i);
                     cell.SetCellValue(headers[i]);
                     cell.CellStyle = BodyStyle;
+                    BodyStyle.BorderTop = BorderStyle.Thick;
+                    BodyStyle.BorderBottom = BorderStyle.Thick;
+                    BodyStyle.BorderLeft = BorderStyle.Thick;
+                    BodyStyle.BorderRight = BorderStyle.Thick;
                 }
 
                 //Below loop is fill content
@@ -298,14 +272,68 @@ namespace RollBook.Controllers
                     QW.SetCellValue(lst[i].QW);
                     TW.SetCellValue(lst[i].TW);
                     NW.SetCellValue(lst[i].NW);
+
                     AVR.SetCellValue(Convert.ToDouble(lst[i].NW) / (Convert.ToDouble(lst[i].OpMtr) - Convert.ToDouble(lst[i].CbMtr)) * 1000);//NEED TO SAVE
 
                     SrNo.CellStyle = Quality.CellStyle = LoomNo.CellStyle = RollNo.CellStyle = Size.CellStyle = DNR.CellStyle = OpMtr.CellStyle = CbMtr.CellStyle = TotalMtr.CellStyle = QW.CellStyle = TW.CellStyle = NW.CellStyle = AVR.CellStyle = BodyStyle;
 
                     sheet.AutoSizeColumn(i);
                 }
+                double sumNW = 0;
 
-                // Declare one MemoryStream variable for write file in stream
+                // Iterate through the list to calculate the sum of NW
+                foreach (var item in lst)
+                {
+                    if (!string.IsNullOrEmpty(item.NW))
+                    {
+                        // Try parsing the NW value to a double
+                        if (double.TryParse(item.NW, out double nwValue))
+                        {
+                            // If parsing is successful, add it to the sum
+                            sumNW += nwValue;
+                        }
+                        else
+                        {
+                            // Handle cases where NW value is not a valid double
+                            // You can choose to skip, log, or handle it differently based on your requirements
+                            Console.WriteLine($"Invalid NW value: {item.NW}");
+                        }
+                    }
+                }
+
+                int lastRowIndex = lst.Count; // Index of the last row of data
+                int sumRowIndex = lastRowIndex + 1; // Index for the row where the sum will be displayed
+
+                // Create the sum row
+                var sumRow = sheet.CreateRow(sumRowIndex);
+
+                // Define the range of cells to be merged for columns A to J (0 to 9)
+                CellRangeAddress mergedRegion = new CellRangeAddress(sumRowIndex, sumRowIndex, 0, 9);
+
+                // Add the merged region to the sheet
+                sheet.AddMergedRegion(mergedRegion);
+
+                // Create cells for the sum row
+                for (int i = 0; i < 12; i++) // Assuming you have 12 columns
+                {
+                    var cell = sumRow.CreateCell(i); // Create a cell for each column
+                    cell.CellStyle = BodyStyle; // Apply the same style as other cells in the body
+                }
+
+                // Set the value of the sum cell to the calculated sum
+                var sumCell = sumRow.CreateCell(11); // Column L (index 11)
+                sumCell.SetCellValue($"Total NW: {sumNW}"); // Set the cell value to include the sum
+
+                // Merge cells for the sum of NW (columns K to L)
+                CellRangeAddress sumMergedRegion = new CellRangeAddress(sumRowIndex, sumRowIndex, 10, 11);
+                sheet.AddMergedRegion(sumMergedRegion);
+
+                // Autosize the columns to fit the content
+                for (int i = 0; i < 12; i++) // Assuming you have 12 columns
+                {
+                    sheet.AutoSizeColumn(i);
+                }
+
                 var stream = new MemoryStream();
                 workbook.Write(stream);
 
