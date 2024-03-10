@@ -167,21 +167,26 @@
         </select>
     </div>
     <div class="col-md-2">
-        <input type="date" id="FromDate" name="FromDate" class="form-control" value="" />
+        <select class="form-control" id="SearchDNR" name="SearchDNR">
+            <option value="0">Select DNR</option>
+            @{
+                if (ViewBag.lstRoll != null)
+                {
+                    foreach (RollBook.Models.RollMaster item in ViewBag.lstDNR)
+                    {
+                        <option value="@item.DNR">@item.DNR</option>
+                    }
+                }
+            }
+        </select>
     </div>
-    @*<div class="col-md-1">
-        <label>To</label>
-    </div>*@
     <div class="col-md-2">
-        <input type="date" id="ToDate" name="ToDate" class="form-control" />
+        <input type="date" id="SearchDate" name="SearchDate" class="form-control" />
     </div>
-    <div class="col-md-1">
-        <input type="text" id="DNR" name="DNR" class="form-control" placeholder="DNR" />
-    </div>
-    <div class="col-md-1" style="float:right">
+    <div class="col-md-2">
         <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
     </div>
-    <div class="col-md-1" style="float:right">
+    <div class="col-md-2" style="float:right">
         <button id="btnDelete" class="btn btn-danger" onclick="DeleteRecords();">Delete</button>
     </div>
     <div class="col-md-2" style="float:right">
@@ -235,8 +240,8 @@
 
             var mData = {
                 QualityID: $("#SearchQualityID").val(),
-                FromDate: $("#FromDate").val() == '' ? output : $("#FromDate").val(),
-                ToDate: $("#ToDate").val() == '' ? output : $("#ToDate").val(),
+                DNR: $("#SearchDNR").val(),
+                EntryDate: $("#SearchDate").val() == '' ? output : $("#SearchDate").val()
             }
 
             $.ajax({
@@ -249,7 +254,6 @@
 
                     var obj = JSON.parse(mRes);
                     var iHTML = "";
-                    
                     if (obj.length === 0) {
                         $("#data").html("<tr><td colspan='15' align='center'>No Data Found.</td></tr>");
                     }
@@ -324,7 +328,7 @@
                 RollNo: $("#RollNo").val(),
                 SizeID: $("#SizeID").val().split("+")[2],
                 DNR: $("#DNR").val(),
-                OpMtr: $("#OpMtr").val() == '' ? "0" : $("#OpMtr").val(),
+                OpMtr: $("#OpMtr").val() == null ? "" : $("#OpMtr").val(),
                 CbMtr: $("#CbMtr").val(),
                 QW: $("#QW").val(),
                 TW: $("#SizeID").val().split("+")[0],
@@ -375,7 +379,6 @@
                 dataType: "json",
                 success: function (mRes) {
                     var obj = JSON.parse(mRes);
-                    
                     $("#QualityID").val(obj[0].QualityID);
                     $("#LoomID").val(obj[0].LoomID);
                     $("#RollNo").val(obj[0].RollNo);
