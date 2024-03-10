@@ -152,7 +152,7 @@
 <br />
 
 <div style="padding-bottom:40px;">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <select class="form-control" id="SearchQualityID" name="SearchQualityID">
             <option value="0">Select Quality</option>
             @{
@@ -166,13 +166,22 @@
             }
         </select>
     </div>
-    <div class="col-md-3">
-        <input type="date" id="SearchDate" name="SearchDate" class="form-control" />
-    </div>
     <div class="col-md-2">
+        <input type="date" id="FromDate" name="FromDate" class="form-control" value="" />
+    </div>
+    @*<div class="col-md-1">
+        <label>To</label>
+    </div>*@
+    <div class="col-md-2">
+        <input type="date" id="ToDate" name="ToDate" class="form-control" />
+    </div>
+    <div class="col-md-1">
+        <input type="text" id="DNR" name="DNR" class="form-control" placeholder="DNR" />
+    </div>
+    <div class="col-md-1" style="float:right">
         <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
     </div>
-    <div class="col-md-2" style="float:right">
+    <div class="col-md-1" style="float:right">
         <button id="btnDelete" class="btn btn-danger" onclick="DeleteRecords();">Delete</button>
     </div>
     <div class="col-md-2" style="float:right">
@@ -226,7 +235,8 @@
 
             var mData = {
                 QualityID: $("#SearchQualityID").val(),
-                EntryDate: $("#SearchDate").val() == '' ? output : $("#SearchDate").val()
+                FromDate: $("#FromDate").val() == '' ? output : $("#FromDate").val(),
+                ToDate: $("#ToDate").val() == '' ? output : $("#ToDate").val(),
             }
 
             $.ajax({
@@ -239,7 +249,7 @@
 
                     var obj = JSON.parse(mRes);
                     var iHTML = "";
-                    debugger;
+                    
                     if (obj.length === 0) {
                         $("#data").html("<tr><td colspan='15' align='center'>No Data Found.</td></tr>");
                     }
@@ -314,7 +324,7 @@
                 RollNo: $("#RollNo").val(),
                 SizeID: $("#SizeID").val().split("+")[2],
                 DNR: $("#DNR").val(),
-                OpMtr: $("#OpMtr").val() == null ? "" : $("#OpMtr").val(),
+                OpMtr: $("#OpMtr").val() == '' ? "0" : $("#OpMtr").val(),
                 CbMtr: $("#CbMtr").val(),
                 QW: $("#QW").val(),
                 TW: $("#SizeID").val().split("+")[0],
@@ -365,7 +375,7 @@
                 dataType: "json",
                 success: function (mRes) {
                     var obj = JSON.parse(mRes);
-                    debugger;
+                    
                     $("#QualityID").val(obj[0].QualityID);
                     $("#LoomID").val(obj[0].LoomID);
                     $("#RollNo").val(obj[0].RollNo);
