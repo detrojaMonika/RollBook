@@ -166,7 +166,7 @@
             }
         </select>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
         <select class="form-control" id="SearchDNR" name="SearchDNR">
             <option value="0">Select DNR</option>
             @{
@@ -181,15 +181,18 @@
         </select>
     </div>
     <div class="col-md-2">
-        <input type="date" id="SearchDate" name="SearchDate" class="form-control" />
+        <input type="date" id="FromDate" name="FromDate" class="form-control" />
     </div>
     <div class="col-md-2">
+        <input type="date" id="ToDate" name="ToDate" class="form-control" />
+    </div>
+    <div class="col-md-1">
         <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
     </div>
-    <div class="col-md-2" style="float:right">
+    <div class="col-md-1" style="float:right">
         <button id="btnDelete" class="btn btn-danger" onclick="DeleteRecords();">Delete</button>
     </div>
-    <div class="col-md-2" style="float:right">
+    <div class="col-md-1" style="float:right">
         <a id="btnExport" href="~/Roll/ExportToExcel" class="btn btn-primary">Export To Excel</a>
     </div>
 
@@ -241,7 +244,8 @@
             var mData = {
                 QualityID: $("#SearchQualityID").val(),
                 DNR: $("#SearchDNR").val(),
-                EntryDate: $("#SearchDate").val() == '' ? output : $("#SearchDate").val()
+                FromDate: $("#FromDate").val() == '' ? output : $("#FromDate").val(),
+                ToDate: $("#ToDate").val() == '' ? output : $("#ToDate").val()
             }
 
             $.ajax({

@@ -13,7 +13,7 @@ namespace RollBook.DAL
     {
         string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
 
-        public List<RollMaster> GetAllRoll(int QualityID,DateTime FromDate,DateTime ToDate)
+        public List<RollMaster> GetAllRoll(int QualityID,string DNR,DateTime FromDate,DateTime ToDate)
         {
             List<RollMaster> RollList = new List<RollMaster>();
             int id = 0;
@@ -23,6 +23,7 @@ namespace RollBook.DAL
                 command.CommandType = CommandType.StoredProcedure;
                 command.CommandText = "RollMaster_Filter";
                 command.Parameters.AddWithValue("@QualityID", QualityID);
+                command.Parameters.AddWithValue("@DNR", DNR);
                 command.Parameters.AddWithValue("@FromDate", FromDate);
                 command.Parameters.AddWithValue("@ToDate", ToDate);
                 SqlDataAdapter sqlDA = new SqlDataAdapter(command);

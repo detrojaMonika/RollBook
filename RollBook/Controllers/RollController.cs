@@ -35,12 +35,12 @@ namespace RollBook.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetData(int QualityID, DateTime FromDate,DateTime ToDate)
+        public JsonResult GetData(int QualityID,string DNR, DateTime FromDate,DateTime ToDate)
         {
             try
             {
                 //List<RollMaster> lstRoll = _RollDAL.GetAllRoll();
-                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID, FromDate,ToDate);
+                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID,DNR, FromDate,ToDate);
                 HttpContext.Cache["RoollBookReport"] = Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll);
 
                 return Json(Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll), JsonRequestBehavior.AllowGet);
