@@ -13,7 +13,7 @@ namespace RollBook.DAL
     {
         string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
-        public List<RollMaster> GetAllRoll(int QualityID, string DNR,DateTime EntryDate)
+        public List<RollMaster> GetAllRoll(int QualityID,string DNR,DateTime EntryDate)
         {
             List<RollMaster> RollList = new List<RollMaster>();
             int id = 0;
