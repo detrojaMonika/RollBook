@@ -166,7 +166,7 @@
             }
         </select>
     </div>
-    <div class="col-md-1">
+    <div class="col-md-2">
         <select class="form-control" id="SearchDNR" name="SearchDNR">
             <option value="0">Select DNR</option>
             @{
@@ -187,12 +187,17 @@
         <input type="date" id="ToDate" name="ToDate" class="form-control" />
     </div>
     <div class="col-md-1">
-        <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
+        <div class="col-xs-2">
+            <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
+        </div>
+        <div class="col-xs-2">
+            <button id="btnClear" class="btn btn-primary" onclick="Clear();">Clear</button>
+        </div>
     </div>
     <div class="col-md-1" style="float:right">
         <button id="btnDelete" class="btn btn-danger" onclick="DeleteRecords();">Delete</button>
     </div>
-    <div class="col-md-1" style="float:right">
+    <div class="col-md-2" style="float:right">
         <a id="btnExport" href="~/Roll/ExportToExcel" class="btn btn-primary">Export To Excel</a>
     </div>
 
@@ -366,6 +371,13 @@
             $("#QW").val("");
             $("#RollID").val("");
             $('#editElement').hide();
+        }
+
+        function Clear() {
+            $("#SearchQualityID").val(0);
+            $("#SearchDNR").val(0);
+            $("#FromDate").val("");
+            $("#ToDate").val("");
         }
 
         function Get(id) {

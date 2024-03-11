@@ -182,5 +182,32 @@ namespace RollBook.DAL
                 return SizeList;
             }
         }
+
+        public List<RollMaster> GetAllDNR()
+        {
+            List<RollMaster> RollList = new List<RollMaster>();
+
+            using (SqlConnection connection = new SqlConnection(conString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "RollMaster_GetDNR";
+                SqlDataAdapter sqlDA = new SqlDataAdapter(command);
+                DataTable dtRoll = new DataTable();
+
+                connection.Open();
+                sqlDA.Fill(dtRoll);
+                connection.Close();
+
+                foreach (DataRow dr in dtRoll.Rows)
+                {
+                    RollList.Add(new RollMaster
+                    {
+                        DNR = dr["DNR"].ToString(),
+                    });
+                }
+                return RollList;
+            }
+        }
     }
 }

@@ -31,6 +31,9 @@ namespace RollBook.Controllers
             List<SizeMaster> lstSize = _RollDAL.GetAllSize();
             ViewBag.lstSize = lstSize;
 
+            List<RollMaster> lstDNR = _RollDAL.GetAllDNR();
+            ViewBag.lstDNR = lstDNR;
+
             return View();
         }
 
@@ -40,7 +43,7 @@ namespace RollBook.Controllers
             try
             {
                 //List<RollMaster> lstRoll = _RollDAL.GetAllRoll();
-                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID,DNR, FromDate,ToDate);
+                List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID, DNR, FromDate, ToDate);
                 HttpContext.Cache["RoollBookReport"] = Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll);
 
                 return Json(Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll), JsonRequestBehavior.AllowGet);
