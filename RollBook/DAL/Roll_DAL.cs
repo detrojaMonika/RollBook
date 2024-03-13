@@ -11,7 +11,7 @@ namespace RollBook.DAL
 {
     public class Roll_DAL
     {
-        string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
+        string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
         public List<RollMaster> GetAllRoll(int QualityID,string DNR,DateTime FromDate,DateTime ToDate)
         {

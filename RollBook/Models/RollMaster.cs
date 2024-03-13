@@ -22,6 +22,7 @@ namespace RollBook.Models
         public string QW { get; set; }
         public string TW { get; set; }
         public string NW { get; set; }
+
         public int QualityID { get; set; }
         public string QualityName { get; set; }
         public int LoomID { get; set; }
