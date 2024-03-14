@@ -28,7 +28,6 @@
                     }
                 }
             </select>
-            @*<input type="text" id="QualityID" class="form-control" name="QualityID" />*@
         </div>
         <div class="col-md-1">
             Loom No
@@ -102,7 +101,6 @@
         <div class="col-md-2">
             <input type="text" id="QW" name="QW" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46' />
         </div>
-
     </div>
 
     <div class="row" style="padding-bottom:20px;">
@@ -131,22 +129,7 @@
             <button id="btnSave" class="btn btn-success" onclick="Save();">Save</button>
             <button id="btnCancel" class="btn btn-danger" onclick="ClearControls();">Cancel</button>
         </div>
-
     </div>
-
-    <div class="row" style="padding-bottom:20px;">
-        @*<div class="col-md-2">
-                TW
-            </div>
-            <div class="col-md-1">
-                :
-            </div>
-            <div class="col-md-3">
-                <input type="text" id="TW" name="TW" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46' />
-            </div>*@
-
-    </div>
-
 </div>
 
 <br />
@@ -405,14 +388,12 @@
                     $("#OpMtr").val(obj[0].OpMtr);
                     $("#CbMtr").val(obj[0].CbMtr);
                     $("#QW").val(obj[0].QW);
-                    //$("#TW").val(obj[0].TW);
                     $("#RollID").val(obj[0].RollID);
                 }
             });
         }
 
         function DeleteRecords() {
-            //alert($('input[name="checkedRecord"]:checked').serialize());
 
             var favorite = [];
             $.each($("input[name='checkedRecord']:checked"), function () {

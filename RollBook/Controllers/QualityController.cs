@@ -35,20 +35,22 @@ namespace RollBook.Controllers
         [HttpPost]
         public JsonResult Save(QualityMaster Roll)
         {
-            //Boolean mres = _RollDAL.RollInsertUpdate(Roll);
-            
+            Boolean mres = _QualityDAL.SaveData(Roll);
             try
             {
-                _QualityDAL.SaveData(Roll);
-                return Json("Successful...!!!", JsonRequestBehavior.AllowGet);
+                if (mres==true)
+                {
+                    return Json("Successful...!!!", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json("Error :", JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {
                 return Json("Error :" + ex.Message, JsonRequestBehavior.AllowGet);
             }
-
-        
-}
-
+        }
     }
 }

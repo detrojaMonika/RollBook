@@ -56,46 +56,6 @@ namespace RollBook.DAL
             }
         }
 
-        internal void Add(RollMaster RollModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        //get data insert and update
-        public bool RollInsertUpdate(RollMaster Roll)
-        {
-            int id = 0;
-            using (SqlConnection connection = new SqlConnection(conString))
-            {
-                SqlCommand command = connection.CreateCommand();
-                command.CommandType = CommandType.StoredProcedure;
-                command.CommandText = "RollMaster_Insert_Update";
-                command.Parameters.AddWithValue("@RollNo", Roll.RollNo);
-                command.Parameters.AddWithValue("@OpMtr", Roll.OpMtr);
-                command.Parameters.AddWithValue("@CbMtr", Roll.CbMtr);
-                command.Parameters.AddWithValue("@DNR", Roll.DNR);
-                command.Parameters.AddWithValue("@LoomID", Roll.LoomID);
-                command.Parameters.AddWithValue("@NW", Roll.NW);
-                command.Parameters.AddWithValue("@QualityID", Roll.QualityID);
-                command.Parameters.AddWithValue("@QW", Roll.QW);
-                command.Parameters.AddWithValue("@TW", Roll.TW);
-                command.Parameters.AddWithValue("@Size", Roll.SizeID);
-                command.Parameters.AddWithValue("@RollID", Roll.RollID);
-
-                connection.Open();
-                id = command.ExecuteNonQuery();
-                connection.Close();
-            }
-            if (id > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public List<QualityMaster> GetAllQuality()
         {
             List<QualityMaster> QualityList = new List<QualityMaster>();
@@ -207,6 +167,40 @@ namespace RollBook.DAL
                     });
                 }
                 return RollList;
+            }
+        }
+
+        public bool RollInsertUpdate(RollMaster Roll)
+        {
+            int id = 0;
+            using (SqlConnection connection = new SqlConnection(conString))
+            {
+                SqlCommand command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = "RollMaster_Insert_Update";
+                command.Parameters.AddWithValue("@RollNo", Roll.RollNo);
+                command.Parameters.AddWithValue("@OpMtr", Roll.OpMtr);
+                command.Parameters.AddWithValue("@CbMtr", Roll.CbMtr);
+                command.Parameters.AddWithValue("@DNR", Roll.DNR);
+                command.Parameters.AddWithValue("@LoomID", Roll.LoomID);
+                command.Parameters.AddWithValue("@NW", Roll.NW);
+                command.Parameters.AddWithValue("@QualityID", Roll.QualityID);
+                command.Parameters.AddWithValue("@QW", Roll.QW);
+                command.Parameters.AddWithValue("@TW", Roll.TW);
+                command.Parameters.AddWithValue("@Size", Roll.SizeID);
+                command.Parameters.AddWithValue("@RollID", Roll.RollID);
+
+                connection.Open();
+                id = command.ExecuteNonQuery();
+                connection.Close();
+            }
+            if (id > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

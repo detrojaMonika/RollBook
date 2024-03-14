@@ -1,33 +1,48 @@
 ﻿USE [RollBook]
 GO
-/****** Object:  StoredProcedure [dbo].[SizeMaster_GetAll]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[StockDetails]    Script Date: 14-03-2024 19:01:59 ******/
+DROP PROCEDURE [dbo].[StockDetails]
+GO
+/****** Object:  StoredProcedure [dbo].[SizeMaster_GetAll]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[SizeMaster_GetAll]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_SelectByPK]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[SearchData]    Script Date: 14-03-2024 19:01:59 ******/
+DROP PROCEDURE [dbo].[SearchData]
+GO
+/****** Object:  StoredProcedure [dbo].[RollMaster_SelectByPK]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_SelectByPK]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Insert_Update]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_SearchData]    Script Date: 14-03-2024 19:01:59 ******/
+DROP PROCEDURE [dbo].[RollMaster_SearchData]
+GO
+/****** Object:  StoredProcedure [dbo].[RollMaster_Insert_Update]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_Insert_Update]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_GetRollNo]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetRollNo]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_GetRollNo]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_GetByQuality]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetDNR]    Script Date: 14-03-2024 19:01:59 ******/
+DROP PROCEDURE [dbo].[RollMaster_GetDNR]
+GO
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetByQuality]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_GetByQuality]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Filter]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_Filter]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_Filter]
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Delete]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_Delete]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[RollMaster_Delete]
 GO
-/****** Object:  StoredProcedure [dbo].[QualityMaster_SelectAll]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[QualityMaster_SelectAll]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[QualityMaster_SelectAll]
 GO
-/****** Object:  StoredProcedure [dbo].[LoomMaster_SelectAll]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[QualityMaster_Insert_Update]    Script Date: 14-03-2024 19:01:59 ******/
+DROP PROCEDURE [dbo].[QualityMaster_Insert_Update]
+GO
+/****** Object:  StoredProcedure [dbo].[LoomMaster_SelectAll]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[LoomMaster_SelectAll]
 GO
-/****** Object:  StoredProcedure [dbo].[DeactiveRecords_Insert]    Script Date: 26-02-2024 23:35:47 ******/
+/****** Object:  StoredProcedure [dbo].[DeactiveRecords_Insert]    Script Date: 14-03-2024 19:01:59 ******/
 DROP PROCEDURE [dbo].[DeactiveRecords_Insert]
 GO
 ALTER TABLE [dbo].[SizeMaster] DROP CONSTRAINT [DF_SizeMaster_CreatedDate]
@@ -38,112 +53,27 @@ ALTER TABLE [dbo].[QualityMaster] DROP CONSTRAINT [DF_QualityMaster_CreatedDate]
 GO
 ALTER TABLE [dbo].[DeactiveRecords] DROP CONSTRAINT [DF_DeactiveRecords_CreatedDate]
 GO
-/****** Object:  Table [dbo].[SizeMaster]    Script Date: 26-02-2024 23:35:48 ******/
+/****** Object:  Table [dbo].[SizeMaster]    Script Date: 14-03-2024 19:01:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[SizeMaster]') AND type in (N'U'))
 DROP TABLE [dbo].[SizeMaster]
 GO
-/****** Object:  Table [dbo].[RollMaster]    Script Date: 26-02-2024 23:35:48 ******/
+/****** Object:  Table [dbo].[RollMaster]    Script Date: 14-03-2024 19:01:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RollMaster]') AND type in (N'U'))
 DROP TABLE [dbo].[RollMaster]
 GO
-/****** Object:  Table [dbo].[QualityMaster]    Script Date: 26-02-2024 23:35:48 ******/
+/****** Object:  Table [dbo].[QualityMaster]    Script Date: 14-03-2024 19:01:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[QualityMaster]') AND type in (N'U'))
 DROP TABLE [dbo].[QualityMaster]
 GO
-/****** Object:  Table [dbo].[LoomMaster]    Script Date: 26-02-2024 23:35:48 ******/
+/****** Object:  Table [dbo].[LoomMaster]    Script Date: 14-03-2024 19:01:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LoomMaster]') AND type in (N'U'))
 DROP TABLE [dbo].[LoomMaster]
 GO
-/****** Object:  Table [dbo].[DeactiveRecords]    Script Date: 26-02-2024 23:35:48 ******/
+/****** Object:  Table [dbo].[DeactiveRecords]    Script Date: 14-03-2024 19:01:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeactiveRecords]') AND type in (N'U'))
 DROP TABLE [dbo].[DeactiveRecords]
 GO
-USE [master]
-GO
-/****** Object:  Database [RollBook]    Script Date: 26-02-2024 23:35:48 ******/
-DROP DATABASE [RollBook]
-GO
-/****** Object:  Database [RollBook]    Script Date: 26-02-2024 23:35:48 ******/
-CREATE DATABASE [RollBook]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'RollBook', FILENAME = N'F:\SQL-2014\RollBook.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
- LOG ON 
-( NAME = N'RollBook_log', FILENAME = N'F:\SQL-2014\RollBook_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
- WITH CATALOG_COLLATION = DATABASE_DEFAULT
-GO
-ALTER DATABASE [RollBook] SET COMPATIBILITY_LEVEL = 150
-GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [RollBook].[dbo].[sp_fulltext_database] @action = 'enable'
-end
-GO
-ALTER DATABASE [RollBook] SET ANSI_NULL_DEFAULT OFF 
-GO
-ALTER DATABASE [RollBook] SET ANSI_NULLS OFF 
-GO
-ALTER DATABASE [RollBook] SET ANSI_PADDING OFF 
-GO
-ALTER DATABASE [RollBook] SET ANSI_WARNINGS OFF 
-GO
-ALTER DATABASE [RollBook] SET ARITHABORT OFF 
-GO
-ALTER DATABASE [RollBook] SET AUTO_CLOSE OFF 
-GO
-ALTER DATABASE [RollBook] SET AUTO_SHRINK OFF 
-GO
-ALTER DATABASE [RollBook] SET AUTO_UPDATE_STATISTICS ON 
-GO
-ALTER DATABASE [RollBook] SET CURSOR_CLOSE_ON_COMMIT OFF 
-GO
-ALTER DATABASE [RollBook] SET CURSOR_DEFAULT  GLOBAL 
-GO
-ALTER DATABASE [RollBook] SET CONCAT_NULL_YIELDS_NULL OFF 
-GO
-ALTER DATABASE [RollBook] SET NUMERIC_ROUNDABORT OFF 
-GO
-ALTER DATABASE [RollBook] SET QUOTED_IDENTIFIER OFF 
-GO
-ALTER DATABASE [RollBook] SET RECURSIVE_TRIGGERS OFF 
-GO
-ALTER DATABASE [RollBook] SET  DISABLE_BROKER 
-GO
-ALTER DATABASE [RollBook] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-GO
-ALTER DATABASE [RollBook] SET DATE_CORRELATION_OPTIMIZATION OFF 
-GO
-ALTER DATABASE [RollBook] SET TRUSTWORTHY OFF 
-GO
-ALTER DATABASE [RollBook] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-GO
-ALTER DATABASE [RollBook] SET PARAMETERIZATION SIMPLE 
-GO
-ALTER DATABASE [RollBook] SET READ_COMMITTED_SNAPSHOT OFF 
-GO
-ALTER DATABASE [RollBook] SET HONOR_BROKER_PRIORITY OFF 
-GO
-ALTER DATABASE [RollBook] SET RECOVERY SIMPLE 
-GO
-ALTER DATABASE [RollBook] SET  MULTI_USER 
-GO
-ALTER DATABASE [RollBook] SET PAGE_VERIFY CHECKSUM  
-GO
-ALTER DATABASE [RollBook] SET DB_CHAINING OFF 
-GO
-ALTER DATABASE [RollBook] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-GO
-ALTER DATABASE [RollBook] SET TARGET_RECOVERY_TIME = 60 SECONDS 
-GO
-ALTER DATABASE [RollBook] SET DELAYED_DURABILITY = DISABLED 
-GO
-ALTER DATABASE [RollBook] SET ACCELERATED_DATABASE_RECOVERY = OFF  
-GO
-ALTER DATABASE [RollBook] SET QUERY_STORE = OFF
-GO
-USE [RollBook]
-GO
-/****** Object:  Table [dbo].[DeactiveRecords]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  Table [dbo].[DeactiveRecords]    Script Date: 14-03-2024 19:01:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -162,7 +92,7 @@ CREATE TABLE [dbo].[DeactiveRecords](
 	[LoomID] [int] NULL
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[LoomMaster]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  Table [dbo].[LoomMaster]    Script Date: 14-03-2024 19:01:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -176,7 +106,7 @@ CREATE TABLE [dbo].[LoomMaster](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[QualityMaster]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  Table [dbo].[QualityMaster]    Script Date: 14-03-2024 19:01:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -191,7 +121,7 @@ CREATE TABLE [dbo].[QualityMaster](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[RollMaster]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  Table [dbo].[RollMaster]    Script Date: 14-03-2024 19:01:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +144,7 @@ CREATE TABLE [dbo].[RollMaster](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[SizeMaster]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  Table [dbo].[SizeMaster]    Script Date: 14-03-2024 19:01:59 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -239,6 +169,10 @@ GO
 INSERT [dbo].[DeactiveRecords] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1013, N'H-2947', N'17510', N'14831', 3, N'3', N'189.4', N'188.2', CAST(N'2024-02-21T17:17:58.370' AS DateTime), 2, 27)
 GO
 INSERT [dbo].[DeactiveRecords] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1014, N'H-2949', N'86749', N'82900', 1, N'2.4', N'180.3', N'179.4', CAST(N'2024-02-21T17:17:58.370' AS DateTime), 2, 22)
+GO
+INSERT [dbo].[DeactiveRecords] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1066, N'N-4', N'72345', N'23456', 3, N'2.5', N'123', N'121.8', CAST(N'2024-02-27T19:42:58.603' AS DateTime), 2, 1)
+GO
+INSERT [dbo].[DeactiveRecords] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1067, N'N-5', N'23456', N'33333', 3, N'2.5', N'123', N'121.8', CAST(N'2024-02-27T19:42:58.603' AS DateTime), 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[DeactiveRecords] OFF
 GO
@@ -394,6 +328,8 @@ INSERT [dbo].[LoomMaster] ([LoomID], [LoomNo]) VALUES (1015, 74)
 GO
 INSERT [dbo].[LoomMaster] ([LoomID], [LoomNo]) VALUES (1016, 75)
 GO
+INSERT [dbo].[LoomMaster] ([LoomID], [LoomNo]) VALUES (1017, 76)
+GO
 SET IDENTITY_INSERT [dbo].[LoomMaster] OFF
 GO
 SET IDENTITY_INSERT [dbo].[QualityMaster] ON 
@@ -478,6 +414,12 @@ INSERT [dbo].[RollMaster] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR]
 GO
 INSERT [dbo].[RollMaster] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1064, N'N-2', N'95699', N'89899', 4, N'3.5', N'134', N'132.7', CAST(N'2024-02-26T22:47:09.623' AS DateTime), 1, 1)
 GO
+INSERT [dbo].[RollMaster] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1065, N'N-3', N'89899', N'72345', 1, N'2.5', N'213', N'212.1', CAST(N'2024-02-27T19:39:37.243' AS DateTime), 1, 1)
+GO
+INSERT [dbo].[RollMaster] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1068, N'N-4', N'72345', N'23441', 2, N'2.5', N'122', N'121', CAST(N'2024-03-02T18:48:43.210' AS DateTime), 1, 1)
+GO
+INSERT [dbo].[RollMaster] ([RollID], [RollNo], [OpMtr], [CbMtr], [SizeID], [DNR], [QW], [NW], [CreatedDate], [QualityID], [LoomID]) VALUES (1069, N'N-5', N'111111', N'23452', 3, N'3.5', N'234', N'232.8', CAST(N'2024-03-02T18:50:01.930' AS DateTime), 1, 2)
+GO
 SET IDENTITY_INSERT [dbo].[RollMaster] OFF
 GO
 SET IDENTITY_INSERT [dbo].[SizeMaster] ON 
@@ -512,7 +454,7 @@ ALTER TABLE [dbo].[RollMaster] ADD  CONSTRAINT [DF_RollMaster_CreatedDate]  DEFA
 GO
 ALTER TABLE [dbo].[SizeMaster] ADD  CONSTRAINT [DF_SizeMaster_CreatedDate]  DEFAULT (getdate()) FOR [CreatedDate]
 GO
-/****** Object:  StoredProcedure [dbo].[DeactiveRecords_Insert]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[DeactiveRecords_Insert]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -533,7 +475,7 @@ INSERT INTO DeactiveRecords (RollID, RollNo, OpMtr, CbMtr, SizeID, DNR, QW, NW, 
 
 SET IDENTITY_INSERT DeactiveRecords OFF;
 GO
-/****** Object:  StoredProcedure [dbo].[LoomMaster_SelectAll]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[LoomMaster_SelectAll]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -544,7 +486,25 @@ BEGIN
 	SELECT LoomID ,LoomNo FROM LoomMaster
 END
 GO
-/****** Object:  StoredProcedure [dbo].[QualityMaster_SelectAll]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[QualityMaster_Insert_Update]    Script Date: 14-03-2024 19:02:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[QualityMaster_Insert_Update]
+	@QualityName varchar(50)
+AS
+
+INSERT INTO [dbo].[QualityMaster]
+           (
+				[QualityName]
+		   )
+     VALUES
+           (
+				@QualityName
+		   )
+GO
+/****** Object:  StoredProcedure [dbo].[QualityMaster_SelectAll]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -555,7 +515,7 @@ BEGIN
 	SELECT QualityID ,QualityName FROM QualityMaster
 END
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Delete]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_Delete]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -566,17 +526,19 @@ AS
 DELETE FROM RollMaster
 WHERE RollID IN (SELECT value FROM STRING_SPLIT(@RollID, ','));
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Filter]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_Filter]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[RollMaster_Filter]
+CREATE PROCEDURE [dbo].[RollMaster_Filter] --0,'3','2024-03-10'
 	@QualityID Int,
-	@EntryDate DateTime NULL
+	@DNR varchar(50) NULL,
+	@FromDate DateTime NULL,
+	@ToDate DateTime NULL
 AS
-IF (@QualityID=0)
+IF (@FromDate != convert(varchar(10),GETDATE(), 120) AND @QualityID=0 AND @DNR='0')
 BEGIN
 	SELECT
 		RollNo 
@@ -598,17 +560,20 @@ BEGIN
 	ON LoomMaster.LoomID=RollMaster.LoomID
 	LEFT JOIN SizeMaster
 	ON SizeMaster.SizeID=RollMaster.SizeID
-	WHERE convert(varchar(10),RollMaster.CreatedDate, 120) = @EntryDate
+	WHERE (convert(varchar(10),RollMaster.CreatedDate, 120) >= DATEADD(d,DATEDIFF(d, 0, @FromDate), 0)
+	AND  convert(varchar(10),RollMaster.CreatedDate, 120) < DATEADD(d, DATEDIFF(d, 0, @ToDate) + 1, 0))
 	ORDER BY RollMaster.CreatedDate DESC
 END
-ELSE
+ELSE IF(@FromDate != convert(varchar(10),GETDATE(), 120) AND @QualityID=0 AND @DNR!='0')
 BEGIN
 	SELECT
 		RollNo 
 		,RollID
 		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
 		,CbMtr
-		,SizeID
+		,RollMaster.SizeID
 		,DNR
 		,QW
 		,NW
@@ -619,13 +584,173 @@ BEGIN
 	ON QualityMaster.QualityID=RollMaster.QualityID
 	LEFT JOIN LoomMaster
 	ON LoomMaster.LoomID=RollMaster.LoomID
-	WHERE RollMaster.QualityID=@QualityID
-	OR convert(varchar(10),RollMaster.CreatedDate, 120) = @EntryDate
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE (RollMaster.DNR=@DNR AND 
+	(convert(varchar(10),RollMaster.CreatedDate, 120) >= DATEADD(d,DATEDIFF(d, 0, @FromDate), 0)
+	AND  convert(varchar(10),RollMaster.CreatedDate, 120) < DATEADD(d, DATEDIFF(d, 0, @ToDate) + 1, 0)))
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE IF(@FromDate != convert(varchar(10),GETDATE(), 120) AND @QualityID!=0 AND @DNR='0')
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE ((RollMaster.QualityID=@QualityID) AND 
+	(convert(varchar(10),RollMaster.CreatedDate, 120) >= DATEADD(d,DATEDIFF(d, 0, @FromDate), 0)
+	AND  convert(varchar(10),RollMaster.CreatedDate, 120) < DATEADD(d, DATEDIFF(d, 0, @ToDate) + 1, 0)))
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE IF(@FromDate = convert(varchar(10),GETDATE(), 120) AND @QualityID != 0 AND @DNR != '0')
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE ((RollMaster.QualityID=@QualityID) AND (RollMaster.DNR=@DNR))
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE IF(@FromDate = convert(varchar(10),GETDATE(), 120) AND @QualityID != 0 AND @DNR = '0')
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE (RollMaster.QualityID=@QualityID)
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE IF(@FromDate = convert(varchar(10),GETDATE(), 120) AND @QualityID = 0 AND @DNR != '0')
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE (RollMaster.DNR=@DNR)
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE IF(@FromDate != convert(varchar(10),GETDATE(), 120) AND @QualityID != 0 AND @DNR != '0')
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE (RollMaster.DNR=@DNR AND RollMaster.QualityID=@QualityID AND 
+	(convert(varchar(10),RollMaster.CreatedDate, 120) >= DATEADD(d,DATEDIFF(d, 0, @FromDate), 0)
+	AND  convert(varchar(10),RollMaster.CreatedDate, 120) < DATEADD(d, DATEDIFF(d, 0, @ToDate) + 1, 0)))
+	ORDER BY RollMaster.CreatedDate DESC
+END
+ELSE 
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,CbMtr
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	WHERE ((RollMaster.QualityID=@QualityID)
+	AND (RollMaster.DNR=@DNR)
+	AND (convert(varchar(10),RollMaster.CreatedDate, 120) >= DATEADD(d,DATEDIFF(d, 0, @FromDate), 0)
+	AND  convert(varchar(10),RollMaster.CreatedDate, 120) < DATEADD(d, DATEDIFF(d, 0, @ToDate) + 1, 0)))
 	ORDER BY RollMaster.CreatedDate DESC
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_GetByQuality]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetByQuality]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -676,7 +801,17 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_GetRollNo]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetDNR]    Script Date: 14-03-2024 19:02:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[RollMaster_GetDNR]
+AS
+SELECT DISTINCT DNR FROM RollMaster ORDER BY DNR ASC
+
+GO
+/****** Object:  StoredProcedure [dbo].[RollMaster_GetRollNo]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -693,7 +828,7 @@ BEGIN
 	SELECT TOP 1 RollNo FROM RollMaster ORDER BY RollID DESC
 END
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_Insert_Update]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_Insert_Update]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -765,7 +900,49 @@ BEGIN
 	
 END
 GO
-/****** Object:  StoredProcedure [dbo].[RollMaster_SelectByPK]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[RollMaster_SearchData]    Script Date: 14-03-2024 19:02:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[RollMaster_SearchData] --0,'3',null
+	@QualityID INT = 0,
+	@DNR VARCHAR(50) = NULL,
+	@FromDate DateTime = NULL,
+	@ToDate DateTime = NULL
+AS
+
+BEGIN
+	SELECT
+		RollNo 
+		,RollID
+		,OpMtr
+		,CbMtr
+		,SizeMaster.Size
+		,SizeMaster.TW
+		,RollMaster.SizeID
+		,DNR
+		,QW
+		,NW
+		,QualityMaster.QualityName
+		,LoomMaster.LoomNo
+	FROM RollMaster
+	INNER JOIN QualityMaster
+	ON QualityMaster.QualityID=RollMaster.QualityID
+	LEFT JOIN LoomMaster
+	ON LoomMaster.LoomID=RollMaster.LoomID
+	LEFT JOIN SizeMaster
+	ON SizeMaster.SizeID=RollMaster.SizeID
+	--WHERE convert(varchar(10),RollMaster.CreatedDate, 120) = @EntryDate
+	WHERE
+        (@FromDate IS NULL OR convert(varchar(10),RollMaster.CreatedDate, 120) >= @FromDate)
+        AND (@ToDate IS NULL OR convert(varchar(10),RollMaster.CreatedDate, 120) <= @ToDate)
+        AND (@QualityID IS NULL OR RollMaster.QualityID = @QualityID)
+        AND (@DNR IS NULL OR RollMaster.DNR = @DNR)
+	ORDER BY RollMaster.CreatedDate DESC
+END
+GO
+/****** Object:  StoredProcedure [dbo].[RollMaster_SelectByPK]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -799,7 +976,40 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[SizeMaster_GetAll]    Script Date: 26-02-2024 23:35:51 ******/
+/****** Object:  StoredProcedure [dbo].[SearchData]    Script Date: 14-03-2024 19:02:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[SearchData]
+    @StartDate DATE = NULL,
+    @EndDate DATE = NULL,
+    @ID NVARCHAR(255) = NULL,
+    @Name NVARCHAR(255) = NULL
+AS
+
+BEGIN
+	IF (@StartDate = convert(varchar(10),GETDATE(), 120))
+	begin
+		SET @StartDate = NULL
+		SET @EndDate=NULL;
+	end
+        
+    SELECT *
+    FROM rollmaster -- Replace YourTableName with the actual name of your table
+    WHERE
+        (@StartDate IS NULL OR convert(varchar(10),RollMaster.CreatedDate, 120) >= @StartDate)
+        AND (@EndDate IS NULL OR convert(varchar(10),RollMaster.CreatedDate, 120) <= @EndDate)
+        AND (@ID IS NULL OR DNR = @ID)
+        AND (@Name IS NULL OR RollNo LIKE '%' + @Name + '%');
+END;
+
+--EXEC SearchData @StartDate = '2024-02-17', @EndDate = '2024-02-18';
+--EXEC SearchData @StartDate = '2024-02-17', @EndDate = '2024-02-18', @ID = 5;
+--EXEC SearchData @StartDate = '2024-03-07', @EndDate = '2024-03-07', @ID = 5, @Name = 'H-2932';
+--EXEC SearchData @StartDate = '2024-02-17', @EndDate = '2024-02-18',  @Name = 'H-2932';
+GO
+/****** Object:  StoredProcedure [dbo].[SizeMaster_GetAll]    Script Date: 14-03-2024 19:02:00 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -809,7 +1019,34 @@ AS
 SELECT SizeID,Size,TW FROM SizeMaster ORDER BY Size ASC
 
 GO
-USE [master]
+/****** Object:  StoredProcedure [dbo].[StockDetails]    Script Date: 14-03-2024 19:02:00 ******/
+SET ANSI_NULLS ON
 GO
-ALTER DATABASE [RollBook] SET  READ_WRITE 
+SET QUOTED_IDENTIFIER ON
+GO
+--select * from Sizemaster
+--select Distinct DNR,SizeID from RollMaster
+CREATE PROCEDURE [dbo].[StockDetails]
+
+AS
+
+SELECT
+    Size,
+    DNR,
+    QualityName,
+    LoomNo,
+    SUM(CONVERT(FLOAT, NW)) AS Quantity
+FROM
+    RollMaster
+INNER JOIN
+    SizeMaster ON sizemaster.SizeID = rollmaster.SizeID
+INNER JOIN
+    QualityMaster ON QualityMaster.QualityID = rollmaster.QualityID
+INNER JOIN
+    LoomMaster ON LoomMaster.LoomID = rollmaster.LoomID
+GROUP BY
+    Size,
+    DNR,
+    QualityName,
+    LoomNo;
 GO

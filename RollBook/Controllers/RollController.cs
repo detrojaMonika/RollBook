@@ -42,7 +42,6 @@ namespace RollBook.Controllers
         {
             try
             {
-                //List<RollMaster> lstRoll = _RollDAL.GetAllRoll();
                 List<RollMaster> lstFilterRoll = _RollDAL.GetAllRoll(QualityID, DNR, FromDate, ToDate);
                 HttpContext.Cache["RoollBookReport"] = Newtonsoft.Json.JsonConvert.SerializeObject(lstFilterRoll);
 
@@ -57,68 +56,9 @@ namespace RollBook.Controllers
         [HttpPost]
         public JsonResult Save(RollMaster Roll)
         {
-            //Boolean mres = _RollDAL.RollInsertUpdate(Roll);
-
             try
             {
-                using (SqlConnection connection = new SqlConnection(conString))
-                {
-                    if (Roll.RollID==0)
-                    {
-                        SqlCommand command1 = connection.CreateCommand();
-                        command1.CommandType = CommandType.StoredProcedure;
-                        command1.CommandText = "RollMaster_GetRollNo";
-
-                        connection.Open();
-
-                        var result = command1.ExecuteScalar();
-
-                        if (result != null && result != DBNull.Value)
-                        {
-                            var parts = result.ToString().Split('-');
-                            char prefix = 'A';
-                            int numericPart = 1;
-                            if (parts.Length == 2)
-                            {
-                                prefix = Convert.ToChar(parts[0]);          
-                                numericPart = Convert.ToInt32(parts[1]);     
-
-                                if (numericPart!=0 && numericPart<9999)
-                                {
-                                    numericPart=numericPart+1;
-                                }
-                                else if (numericPart==9999)
-                                {
-                                    //increment alphabet
-                                    prefix++;
-                                    numericPart=1;
-                                }
-                                Roll.RollNo=prefix.ToString()+'-'+numericPart.ToString();
-                            }
-                        }
-                        connection.Close();
-                    }
-
-                    SqlCommand command = connection.CreateCommand();
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.CommandText = "RollMaster_Insert_Update";
-                    command.Parameters.AddWithValue("@RollNo", Roll.RollNo);
-                    command.Parameters.AddWithValue("@OpMtr", Roll.OpMtr);
-                    command.Parameters.AddWithValue("@CbMtr", Roll.CbMtr);
-                    command.Parameters.AddWithValue("@DNR", Roll.DNR);
-                    command.Parameters.AddWithValue("@LoomID", Roll.LoomID);
-                    command.Parameters.AddWithValue("@NW", Convert.ToDouble(Roll.QW) - Convert.ToDouble(Roll.TW));
-                    command.Parameters.AddWithValue("@QualityID", Roll.QualityID);
-                    command.Parameters.AddWithValue("@QW", Roll.QW);
-                    //command.Parameters.AddWithValue("@TW", Roll.TW);
-                    command.Parameters.AddWithValue("@SizeID", Roll.SizeID);
-                    command.Parameters.AddWithValue("@RollID", Roll.RollID);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                    connection.Close();
-                }
-
+                Boolean mres = _RollDAL.RollInsertUpdate(Roll);
                 return Json("Successful...!!!", JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
