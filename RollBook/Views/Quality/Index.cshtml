@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "Quality";
+}
+
+<h2 style="text-align:center">Quality</h2>
+
+<div class="container" style="text-align:center">
+    <input type="hidden" id="QualityID" name="QualityID" />
+    <div class="row" style="padding-bottom:20px;">
+        <div>
+            <div class="col-md-1">
+                Quality
+            </div>
+            <div class="col-md-1">
+                :
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="QualityName" class="form-control" name="QualityName" />
+            </div>
+            
+        </div>
+        <div class="col-md-2">
+            <button id="btnSave" class="btn btn-success" onclick="Save();">Save</button>
+            <button id="btnCancel" class="btn btn-danger" onclick="clear();">Cancel</button>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-12">
+        <table id="datatable" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+            <thead>
+                <tr>
+                    <th>SrNo.</th>
+                    <th>QualityName</th>
+            </thead>
+            <tbody id="data"></tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetData();
+
+        });
+
+        function GetData() {
+
+            $.ajax({
+                type: "POST",
+                url: "/Quality/GetData",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+
+                    var obj = JSON.parse(mRes);
+                    var iHTML = "";
+                    if (obj.length === 0) {
+                        $("#data").html("<tr><td colspan='2' align='center'>No Data Found.</td></tr>");
+                    }
+                    else {
+
+                        var sum = 0;
+                        for (var i = 0; i < obj.length; i++) {
+
+                            iHTML += "<tr>";
+                            iHTML += "<td>" + (i + 1) + "</td>";
+                            iHTML += "<td>" + obj[i].QualityName + "</td>";
+                            iHTML += "</tr>";
+                        }
+
+                        $("#data").html(iHTML);
+                    }
+                },
+                error: function (err) {
+                    swal(err.statusText);
+                }
+            });
+        }
+
+        function Save() {
+            
+            if ($("#QualityName").val() == "") {
+                alert("Please Enter Quality");
+                return false;
+            }
+           
+
+            var mData = {
+                QualityID: $("#QualityID").val(),
+                QualityName: $("#QualityName").val(),
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Quality/Save",
+                data: JSON.stringify(mData),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    GetData();
+                },
+                error: function (err) {
+                    swal(err.statusText);
+                }
+            });
+        }
+
+        function ClearControls() {
+            
+            $("#QualityName").val("");
+            $("#QualityID").val("");
+        }
+    </script>
+}
+
