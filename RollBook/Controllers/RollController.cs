@@ -17,6 +17,7 @@ namespace RollBook.Controllers
     {
 
         Roll_DAL _RollDAL = new Roll_DAL();
+        //string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
         string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
         // GET: Student
