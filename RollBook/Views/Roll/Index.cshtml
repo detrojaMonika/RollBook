@@ -187,17 +187,15 @@
         <input type="date" id="ToDate" name="ToDate" class="form-control" />
     </div>
     <div class="col-md-1">
-        <div class="col-xs-2">
-            <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
-        </div>
-        <div class="col-xs-2">
-            <button id="btnClear" class="btn btn-primary" onclick="Clear();">Clear</button>
-        </div>
+        <button id="btnSearch" class="btn btn-success" onclick="GetData();">Search</button>
     </div>
-    <div class="col-md-1" style="float:right">
+    <div class="col-md-1">
+        <button id="btnClear" class="btn btn-primary" onclick="Clear();">Clear</button>
+    </div>
+    <div class="col-md-1" >
         <button id="btnDelete" class="btn btn-danger" onclick="DeleteRecords();">Delete</button>
     </div>
-    <div class="col-md-2" style="float:right">
+    <div class="col-md-1" >
         <a id="btnExport" href="~/Roll/ExportToExcel" class="btn btn-primary">Export To Excel</a>
     </div>
 
@@ -237,12 +235,21 @@
         $(document).ready(function () {
             $('#editElement').hide();
             GetData();
-            
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get today's date in the format YYYY-MM-DD
+            var today = new Date().toISOString().split('T')[0];
+
+            // Set the max attribute for both date inputs
+            document.getElementById('FromDate').setAttribute('max', today);
+            document.getElementById('ToDate').setAttribute('max', today);
         });
 
         //get all data
         function GetData() {
-            
+
             var d = new Date();
             var output = d.getFullYear() + '-' + (d.getMonth() + 1 < 10 ? '0' : '') + (d.getMonth() + 1) + '-' + (d.getDate() < 10 ? '0' : '') + d.getDate();
 
@@ -305,7 +312,7 @@
 
         //save student data
         function Save() {
-            
+
             if ($("#QualityID").val() == 0) {
                 alert("Please Select Quality");
                 return false;
@@ -330,7 +337,7 @@
                 alert("Enter QW");
                 return false;
             }
-            
+
             var mData = {
                 QualityID: $("#QualityID").val(),
                 LoomID: $("#LoomID").val(),
@@ -381,7 +388,7 @@
         }
 
         function Get(id) {
-            
+
             ClearControls();
             $('#editElement').show();
 
