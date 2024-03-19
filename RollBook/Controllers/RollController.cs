@@ -1,4 +1,6 @@
 ﻿using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
 using RollBook.DAL;
 using RollBook.Models;
 using System;
@@ -17,7 +19,6 @@ namespace RollBook.Controllers
     {
 
         Roll_DAL _RollDAL = new Roll_DAL();
-        //string conString = ConfigurationManager.ConnectionStrings["Student_InformationConnectionstring"].ToString();
         string conString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
 
         // GET: Student
@@ -308,7 +309,95 @@ namespace RollBook.Controllers
 
                     sheet.AutoSizeColumn(i);
                 }
+                double sumNW = 0;
+                foreach (var item in lst)
+                {
+                    if (!string.IsNullOrEmpty(item.NW))
+                    {
+                        // Try parsing the NW value to an integer
+                        if (double.TryParse(item.NW, out double nwValue))
+                        {
+                            // If parsing is successful, add it to the sum
+                            sumNW += nwValue;
+                        }
+                        else
+                        {
+                            // Handle cases where NW value is not a valid double
+                            // You can choose to skip, log, or handle it differently based on your requirements
+                            Console.WriteLine($"Invalid NW value: {item.NW}");
+                        }
+                    }
+                }
+                var borderStyle = workbook.CreateCellStyle();
 
+                // Create a new row at index lst.Count + 1
+                var sumRow = sheet.CreateRow(lst.Count + 1);
+
+                // Create a cell in column L (index 11) of the new row
+                var sumCell = sumRow.CreateCell(11);
+
+                // Set the value of the cell to the calculated sumNW
+                sumCell.SetCellValue(sumNW);
+
+                // Optionally, apply any formatting or styling to the cell if needed
+                // For example, if you want to apply the same body style as other cells:
+                sumCell.CellStyle = BodyStyle;
+
+                // Autosize the column to fit the content
+                sheet.AutoSizeColumn(11); // Column L
+
+                borderStyle.CloneStyleFrom(BodyStyle); // Clone the body style to inherit its properties
+                borderStyle.BorderTop = BorderStyle.Thin;
+                borderStyle.BorderBottom = BorderStyle.Thin;
+                borderStyle.BorderLeft = BorderStyle.Thin;
+                borderStyle.BorderRight = BorderStyle.Thin;
+
+                // Iterate through each row in the table
+                for (int i = 0; i <= lst.Count + 1; i++) // Include the header row and data rows
+                {
+                    var row = sheet.GetRow(i) ?? sheet.CreateRow(i); // Get the current row or create a new one if it doesn't exist
+
+                    // Iterate through each cell in the current row
+                    for (int j = 0; j < headers.Count; j++) // Assuming headers.Count represents the number of columns
+                    {
+                        var cell = row.GetCell(j) ?? row.CreateCell(j); // Get the current cell or create a new one if it doesn't exist
+
+                        // Apply the border style to the cell
+                        cell.CellStyle = borderStyle;
+                    }
+                }
+                int rowToMerge = lst.Count + 1;
+                // Define the range of cells to be merged
+                CellRangeAddress mergedRegion = new CellRangeAddress(rowToMerge, rowToMerge, 0, 9); // Columns A to K (0 to 10)
+
+                // Add the merged region to the sheet
+                sheet.AddMergedRegion(mergedRegion);
+                for (int rowIndex = mergedRegion.FirstRow; rowIndex <= mergedRegion.LastRow; rowIndex++)
+                {
+                    var row = sheet.GetRow(rowIndex);
+                    if (row != null)
+                    {
+                        for (int columnIndex = mergedRegion.FirstColumn; columnIndex <= mergedRegion.LastColumn; columnIndex++)
+                        {
+                            var cell = row.GetCell(columnIndex);
+                            if (cell == null)
+                            {
+                                cell = row.CreateCell(columnIndex);
+                            }
+
+                            // Apply the border style to the cell
+                            cell.CellStyle = borderStyle;
+                        }
+                    }
+                }
+                var totalCell = sumRow.CreateCell(10); // Column K (10th index)
+
+                // Set the value of the total cell
+                totalCell.SetCellValue($"Total:");
+
+                // Autosize the column to fit the content
+                sheet.AutoSizeColumn(10);
+                totalCell.CellStyle = borderStyle;
                 // Declare one MemoryStream variable for write file in stream
                 var stream = new MemoryStream();
                 workbook.Write(stream);
